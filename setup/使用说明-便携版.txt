@@ -1,0 +1,44 @@
+QR Quick Lite 1.0.0 便携版
+
+解压到任意目录，双击 QRQuickLite.exe 就能用。不需要安装，不需要 .NET 运行时，不需要管理员权限。
+
+基本用法
+  1. 按 Alt+Q（或点界面上的「截图识别」）进入截图模式。
+  2. 按住左键框选二维码，松开。
+  3. 点右键，选「识别二维码」。
+  4. 在结果窗口里复制内容，或点「打开链接」。
+
+便携模式
+  本目录里的 portable.dat 是便携标记文件。
+  有它：配置（settings.json）、日志（logs\）、自检报告（selftest\）全部写在本目录，
+        整个文件夹删掉就一点不剩，不会在系统里留东西。
+  删掉它：回到常规模式，数据写到 %AppData%\QRQuickLite。
+
+  若本目录不可写（例如放在只读位置），程序会自动退回常规模式，不会启动失败。
+
+右键菜单（可选）
+  设置 → 资源管理器右键菜单 → 勾选后，在文件、文件夹、桌面空白处右键都有「二维码识别」，
+  点击直接进入截图，不需要先打开程序。取消勾选立即移除。
+  注意：菜单项里记录的是 exe 的完整路径，移动文件夹后重新勾选一次即可。
+
+识别能力
+  支持 13 种码制，两段式识别：先只认二维码（几毫秒返回），没命中再扫全部格式。
+    矩阵码：QR Code、Aztec、Data Matrix、PDF417
+    一维码：EAN-13、EAN-8、UPC-A、UPC-E、ITF、Code 128、Code 93、Code 39、Codabar
+  不支持 DataBar、MaxiCode、Micro QR（识别库没有对应实现）。
+  识别全部在本机完成，不联网、不上传任何图片或内容。只打开 http / https 链接，其他协议一律拒绝。
+  日志不记录二维码内容。
+
+命令行
+  QRQuickLite.exe --selftest --e2e          完整自检（83 项），报告写到 selftest\ 下
+  QRQuickLite.exe --capture                 直接进入截图模式，不显示主窗口
+  QRQuickLite.exe --enable-context-menu     加入右键菜单（改注册表，同时改配置）
+  QRQuickLite.exe --disable-context-menu    移除右键菜单
+
+文件说明
+  QRQuickLite.exe   主程序（自包含单文件）
+  portable.dat      便携标记，空文件
+  使用说明.txt      本文件
+
+系统要求
+  Windows 10 1809 (x64) 或更高。已内置 .NET 运行时。

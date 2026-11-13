@@ -1,0 +1,100 @@
+<Window x:Class="QRQuick.Views.ResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="识别结果"
+        Width="440" MinHeight="180" MaxHeight="560"
+        SizeToContent="Height"
+        WindowStartupLocation="Manual"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        Background="{StaticResource CardBackgroundBrush}"
+        FontFamily="{StaticResource AppFontFamily}"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="5" CornerRadius="0"
+                            GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Window.Resources>
+
+    <Border BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="1" Background="{StaticResource CardBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- 标题 -->
+            <Grid Grid.Row="0" Background="#FFF8FAFC" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <TextBlock Text="识别结果" Style="{StaticResource TitleTextStyle}" FontSize="13" />
+                    <Border x:Name="CountBadge" Background="#FFEFF4FF" CornerRadius="9" Padding="8,1" Margin="9,0,0,0"
+                            VerticalAlignment="Center">
+                        <TextBlock x:Name="CountText" Text="1 个" FontSize="11" Foreground="{StaticResource AccentBrush}" />
+                    </Border>
+                </StackPanel>
+
+                <Button Content="关闭" Style="{StaticResource CloseCaptionButtonStyle}" HorizontalAlignment="Right"
+                        Margin="0,0,8,0" VerticalAlignment="Center" Click="Close_Click" />
+            </Grid>
+
+            <!-- 结果列表 -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="380" Padding="14,4,14,4">
+                <ItemsControl x:Name="ResultsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="0,0,0,1" Padding="0,10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <DockPanel Grid.Row="0">
+                                        <TextBlock Text="{Binding Index}" DockPanel.Dock="Left" MinWidth="18"
+                                                   Style="{StaticResource HintTextStyle}" Margin="0,2,6,0"
+                                                   VerticalAlignment="Top" />
+                                        <TextBox Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap"
+                                                 MaxHeight="120" FontSize="12.5" BorderThickness="0" Padding="0"
+                                                 Background="Transparent" Foreground="{StaticResource TextPrimaryBrush}"
+                                                 VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" />
+                                    </DockPanel>
+
+                                    <DockPanel Grid.Row="1" Margin="24,6,0,0">
+                                        <Button Content="复制" Style="{StaticResource LinkButtonStyle}" DockPanel.Dock="Left"
+                                                Tag="{Binding}" Click="CopyOne_Click" />
+                                        <Button Content="打开链接" Style="{StaticResource LinkButtonStyle}" DockPanel.Dock="Left"
+                                                Tag="{Binding}" Click="OpenOne_Click"
+                                                Visibility="{Binding IsValidUrl, Converter={StaticResource BoolToVisibility}}" />
+                                        <TextBlock Text="{Binding MetaText}" Style="{StaticResource HintTextStyle}"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- 底部操作 -->
+            <Border Grid.Row="2" Background="#FFF8FAFC" BorderBrush="{StaticResource CardBorderBrush}"
+                    BorderThickness="0,1,0,0" Padding="14,10">
+                <DockPanel>
+                    <Button x:Name="CopyAllButton" Content="复制全部" Style="{StaticResource SecondaryButtonStyle}"
+                            DockPanel.Dock="Left" Margin="0,0,8,0" Click="CopyAll_Click" />
+                    <Button Content="重新截图" Style="{StaticResource SecondaryButtonStyle}" DockPanel.Dock="Left"
+                            Click="Recapture_Click" />
+                    <Button Content="关闭" Style="{StaticResource PrimaryButtonStyle}" HorizontalAlignment="Right"
+                            Padding="20,7" Click="Close_Click" />
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

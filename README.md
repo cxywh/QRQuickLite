@@ -35,3 +35,24 @@ Windows 上的极简二维码识别工具。按一次快捷键框选屏幕区域
 ## 右键菜单
 
 只写当前用户注册表，不需要管理员权限；在设置里取消勾选立即移除。文件、文件夹、文件夹空白处、桌面空白处四个位置均可使用。
+
+## 构建
+
+需要 .NET 10 SDK。
+
+```bash
+dotnet build QRQuickLite.csproj
+
+dotnet publish QRQuickLite.csproj -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+  -p:DebugType=None -p:DebugSymbols=false -o publish
+```
+
+安装包用 Inno Setup 6 编译 `setup/QRQuickLite.iss`（脚本内的路径均相对于 `setup/`，需先完成上面的 publish）。
+
+程序自带自检：
+
+```bash
+QRQuickLite.exe --selftest        # 基础自检
+QRQuickLite.exe --selftest --e2e  # 追加截图交互端到端
+```

@@ -1,0 +1,9 @@
+bin/
+obj/
+publish/
+dist/
+logs/
+selftest/
+settings.json
+*.user
+.vs/

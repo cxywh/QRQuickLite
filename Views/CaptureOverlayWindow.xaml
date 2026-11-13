@@ -1,0 +1,49 @@
+<Window x:Class="QRQuick.Views.CaptureOverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QR Quick 截图"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual"
+        ShowActivated="True"
+        Focusable="True"
+        FontFamily="Microsoft YaHei UI"
+        UseLayoutRounding="False"
+        SnapsToDevicePixels="False">
+
+    <!-- Root 使用物理像素坐标系：宽高等于显示器物理尺寸，再通过 RenderTransform 缩放到 DIP -->
+    <Grid x:Name="Root" Background="#01000000" RenderTransformOrigin="0,0">
+        <Canvas x:Name="Layer" ClipToBounds="True">
+
+            <!-- 半透明遮罩（含选区挖孔） -->
+            <Path x:Name="MaskPath" Fill="#96000000" IsHitTestVisible="False" />
+
+            <!-- 十字辅助线：白线 + 黑色描边保证在深浅背景上都可见 -->
+            <Line x:Name="CrossShadowH" Stroke="#B0000000" StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+            <Line x:Name="CrossShadowV" Stroke="#B0000000" StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+            <Line x:Name="CrossH" Stroke="#FFFFFFFF" StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+            <Line x:Name="CrossV" Stroke="#FFFFFFFF" StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+
+            <!-- 选区边框 -->
+            <Rectangle x:Name="SelBorder" Stroke="#FF3B82F6" StrokeThickness="2" Fill="Transparent"
+                       IsHitTestVisible="False" Visibility="Collapsed" />
+
+            <!-- 选区尺寸 -->
+            <Border x:Name="SizeBadge" Background="#E0101827" CornerRadius="4" Padding="8,3"
+                    IsHitTestVisible="False" Visibility="Collapsed">
+                <TextBlock x:Name="SizeText" Foreground="#FFFFFFFF" FontSize="13" />
+            </Border>
+
+            <!-- 右键操作菜单 -->
+            <Border x:Name="MenuPanel" Background="#F21B2436" BorderBrush="#FF3B4A63" BorderThickness="1"
+                    CornerRadius="6" Visibility="Collapsed" IsHitTestVisible="True">
+                <StackPanel x:Name="MenuItems" Margin="4" />
+            </Border>
+
+        </Canvas>
+    </Grid>
+</Window>
